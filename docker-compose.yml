@@ -1,14 +1,21 @@
-version: '2'
+version: '3'
 services:
-  nginx-proxy:
-    image: jwilder/nginx-proxy
-    container_name: nginx-proxy
-    ports:
-      - "80:80"
-    volumes:
-      - /var/run/docker.sock:/tmp/docker.sock:ro
+    nginx-proxy:
+      container_name: nginx-proxy
+      image: jwilder/nginx-proxy:alpine
+      volumes:
+        - ./vhost.d:/etc/nginx/vhost.d
+        - html_volume:/usr/share/nginx/html
+        - /var/run/docker.sock:/tmp/docker.sock:ro
+        - /home/user/tiles:/opt/tiles
+      ports:
+        - "80:80"
+      restart: unless-stopped
 
-  whoami:
-    image: jwilder/whoami
-    environment:
-      - VIRTUAL_HOST=whoami.local
+volumes:
+    html_volume:
+
+networks:
+  default:
+    external:
+      name: nginx-proxy
