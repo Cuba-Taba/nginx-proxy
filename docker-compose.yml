@@ -5,6 +5,7 @@ services:
       image: jwilder/nginx-proxy:alpine
       volumes:
         - ./vhost.d:/etc/nginx/vhost.d
+        - ./conf.d:/etc/nginx/conf.d
         - html_volume:/usr/share/nginx/html
         - /var/run/docker.sock:/tmp/docker.sock:ro
         - /home/user/tiles:/opt/tiles
